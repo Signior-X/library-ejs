@@ -38,7 +38,7 @@ console.log("Start Table 2")
  * name - Name of the user
  * isadmin - (boolean) Wheather he is librarian or admin (Write now considering both as same)
  */
-var table2 = "CREATE TABLE users(userid serial primary key, email varchar(100) unique, password varchar(256), name varchar(30), isadmin boolean)"
+var table2 = "CREATE TABLE users(userid serial primary key, email varchar(100) unique not null, password varchar(256), name varchar(30), isadmin boolean)"
 db.none(table2)
     .then(data => {
         console.log("Successfully created table users");
