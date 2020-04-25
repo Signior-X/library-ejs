@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <%- include('header.ejs') -%>
+        <link rel='stylesheet' href='/stylesheets/forms.css' />
+    </head>
+    <body>
+        <!-- Getting Flash Messages -->
+        <% if(flashMessage){ %>
+            <div id="flash-messages" class="container">
+                <p> <%= flashMessage %> </p>
+            </div>
+        <% } %>
+
+        <div>
+            <!-- Form for Login -->
+            <form action='/login' method="post" class="login-form-body">
+                <!-- Heading -->
+                <div class="placeholder" id='login-heading'>
+                    <h1><center> Login Page </center></h1>
+                </div>
+
+                <!-- Email -->
+                <div class="form-group form-text">
+                    <input id="login-email" type="text" class="form-control input-block input-contrast" placeholder="Email" name="email" value="" required>
+                </div>
+
+                <!-- Password -->
+                <div class="form-group form-text">
+                    <input id="login-password" type="password" class="form-control input-block input-contrast" placeholder="Password" name="password" value="" required>
+                </div>
+
+                <!-- Submit Button -->
+                <div><center>
+                    <input id="submit-button" type="submit" value="Submit"></center>
+                 </div>
+            </form>
+
+            <div style="text-align: center; margin-top: 16px;">
+                New User?
+                <a href="register">Sign Up!</a>
+            </div>
+        </div>
+    </body>
+</html>

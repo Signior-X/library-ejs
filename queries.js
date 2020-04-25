@@ -66,7 +66,7 @@ function getAllBooks(req, res, next){
 
 /* Funciton to add a book */
 function addBook(req, res, next){
-    reqbody = req.body;
+    var reqbody = req.body;
     if('name' in reqbody){
         stmt = create_insert_statement(reqbody, 'books');
         db.one(stmt+' returning id')
@@ -86,11 +86,11 @@ function addBook(req, res, next){
     }
 }
 
-/* Function to add a user */
+/* REST API to add a user */
 function addUser(req, res, next){
-    reqbody = req.body;
+    var reqbody = req.body;
     reqbody['isadmin']=false
-    stmt = create_insert_statement(reqbody, 'users');
+    var stmt = create_insert_statement(reqbody, 'users');
     db.one(stmt + ' returning userid')
         .then(function (data) {
             res.status(200)
@@ -105,9 +105,92 @@ function addUser(req, res, next){
         });
 }
 
+/* Function to check Valid Login or not */
+function checkLogin(req, res, next){
+    if(req.session.userid){
+        res.end("Already logged in!\n");
+    }
+
+    var req_email = req.body.email;
+    var req_password = req.body.password;
+    // Executing one or None
+    db.oneOrNone ("select userid,password,name from users where email=$1", req_email)
+        .then(function(data){
+            try{
+                if(data['password'] === req_password){
+                    // Adding cookies for session
+                    req.session.userid=data['userid'];
+                    req.session.email=req_email;
+                    req.session.name=data['name'];
+
+                    // Redirecting as logged in
+                    res.status(200);
+                    res.redirect('/');
+                }
+                else{
+                    //res.end("Invalid Password");
+                    res.render('login.ejs', {title: 'Login Page!', flashMessage: 'Invalid Password!'});
+                }
+            } catch(e){    // try - catch is checking that the data is not null
+                console.log(e);
+                // The user does not exists
+                res.render('login.ejs', { title: 'Login Page!', flashMessage: 'Username does not exist!'});
+            }
+        })
+        .catch(err => {
+            return next(err);
+        });
+}
+
+/* Function to register a new user */
+function registerUser(req, res, next){
+    if(req.session.userid){
+        res.end("First log out to Enter new user\n");
+    }
+
+    var req_name = req.body.name;
+    var req_email = req.body.email;
+    var req_password = req.body.password;
+
+    db.oneOrNone("select userid from users where email=$1", req_email)
+        .then(useridgot => {
+            try{
+                var ifitexists = (useridgot['userid']);
+                res.render('register.ejs', { title: 'Login Page!', flashMessage: 'This email already exists!'});
+            }
+            // The above try gives error when the userid does not exists
+            catch{
+                
+                //Now create a new user
+                db.one("Insert into users(name, email, password, isadmin) values($1,$2,$3,$4) returning userid",[req_name, req_email, req_password, false])
+                .then(function(data){
+                    console.log("successfully added the new user",data['userid']);
+                    
+                    // Adding cookies for session
+                    req.session.userid=data['userid'];
+                    req.session.email=req_email;
+                    req.session.name=req_name;
+
+                    // Redirecting as logged in
+                    res.status(200);
+                    res.redirect('/');
+                })
+                .catch(err =>{
+                    return next(err);
+                });
+            }
+        })
+        .catch(err => {
+            return next(err);
+        });
+}
+
+
 module.exports = {
     getAllUsers: getAllUsers,
     getAllBooks: getAllBooks,
     addBook: addBook,
-    addUser: addUser
+    addUser: addUser,
+    checkLogin: checkLogin,
+    registerUser: registerUser
 };

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <%- include('header.ejs') -%>
+        <link rel='stylesheet' href='/stylesheets/forms.css' />
+    </head>
+    <body>
+        <!-- Getting Flash Messages -->
+        <% if(flashMessage){ %>
+            <div id="flash-messages" class="container">
+                <p> <%= flashMessage %> </p>
+            </div>
+        <% } %>
+        
+        <!-- For checking that password matches -->
+        <script>
+            function passwordMatch(){
+                var password = document.getElementById("register-password").value;
+                var confirmPassword = document.getElementById("register-confirm-password").value;
+                if(password === confirmPassword){
+                    return true;
+                }
+                else{
+                    alert('Password did not match!');
+                    return false;
+                }
+            }
+        </script>
+
+        <!-- Starting the register form -->
+        <div class="container">
+            <form action="/register" method="post" class="register-form-body" onsubmit="return passwordMatch()">
+                <!-- Heading -->
+                <div class="placeholder" id='register-heading'>
+                    <h1><center> Register Page </center></h1>
+                </div>
+                <!-- Name -->
+                <div class="form-group">
+                    <label class="input-contrast">Name</label>
+                    <input id="register-name" type="text" class="form-control input-block input-contrast" placeholder="Name" name="name" value="" required>
+                </div>
+
+                <!-- Email -->
+                <div class="form-group">
+                    <label class="input-contrast">Email</label>
+                    <input id="register-email" type="text" class="form-control input-block input-contrast" placeholder="Email" name="email" value="" required>
+                </div>
+
+                <!-- Password -->
+                <div class="form-group">
+                    <label class="input-contrast">Password</label>
+                    <input id="register-password" type="password" class="form-control input-block input-contrast" placeholder="Password" name="password" value="" required>
+                </div>
+
+                <!-- Confirm Password -->
+                <div class="form-group">
+                    <label class="input-contrast">Confirm Password</label>
+                    <input id="register-confirm-password" type="password" class="form-control input-block input-contrast" placeholder="Confirm Password" name="Confirm-password" value="" required>
+                </div>
+
+                <div style="text-align: center; margin-top: 16px;">
+                    <input id="submit-button" type="submit" value="Submit" style="">
+                 </div>
+                
+            </form>
+        </div>
+    </body>
+</html>
