@@ -1,6 +1,8 @@
 {
   "name": "library-ejs",
   "version": "0.0.0",
+  "description": "Books Library",
+  "author": "Priyam Seth",
   "scripts": {
     "start": "node ./bin/www"
   },
@@ -14,5 +16,8 @@
     "http-errors": "~1.6.3",
     "morgan": "~1.9.1",
     "pg-promise": "^10.5.1"
+  },
+  "engines": {
+    "node": "13.13.0"
   }
 }
