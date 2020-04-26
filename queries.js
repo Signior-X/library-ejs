@@ -195,12 +195,13 @@ function viewBooks(req, res, next){
     if(req.session.email){
         db.any('select * from books')
         .then(function(data){
+            /*
+            data.forEach(item =>{
+                console.log(item);
+            })
+            */
             res.status(200)
-            .json({
-            status: 'success',
-            data: data,
-            message: 'Retrieved ALL Books'
-            });
+            res.render('books.ejs', { title: 'Books', name: req.session.name, data: data})
     })
     .catch(function (err) {
         return next(err);

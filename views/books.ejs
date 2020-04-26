@@ -9,10 +9,34 @@
             
             <!-- Heading -->
             <div class="placeholder" id='addbook-heading'>
-                <h1><center> Add Book Page </center></h1>
+                <h1><center> Books in the Library </center></h1>
             </div>
 
             <!--  Getting the Books data -->
+            <table class="table" style="text-align: center;">
+                <!-- Table Headers -->
+                <thead>
+                    <tr>
+                      <th>Id</th>
+                      <th>Name</th>
+                      <th>Author</th>
+                      <th>Genre</th>
+                      <th>Date Added</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% data.forEach(item => { %>
+                        <tr>
+                            <td><%= item.id %></td>
+                            <td><%= item.name %></td>
+                            <td><%= item.author %></td>
+                            <td><%= item.genre %></td>
+                            <td><%= item.dateadded %></td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+            
             
         </div>
         <%- include('jslib.ejs') -%>
