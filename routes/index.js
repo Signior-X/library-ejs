@@ -7,11 +7,8 @@ var db = require('../queries');
 /* GET home page. */
 router.get('/', function (req, res, next) {
   if(req.session.userid){
-    // Update views
-    req.session.views = (req.session.views || 0) + 1;
-
-    // Write response
-    res.end(req.session.views + ' views');
+    res.status(200);
+    res.render('index.ejs', {title: 'Home', name: req.session.name});
   } else{
     res.redirect('/login');
   }
@@ -24,8 +21,18 @@ router.get('/api/getallusers', db.getAllUsers);
 /* SHOW ALL BOOKS */
 router.get('/api/getallbooks', db.getAllBooks);
 
-/* ADD A BOOK */
-router.post('/api/addbook', db.addBook);
+/* GET Add a Book page */
+router.get('/addbook', function(req, res, next){
+  if(req.session.userid){
+    res.render('addbook.ejs', {title: 'Add Book', flashMessage: '', name: req.session.name});
+  }
+  else{
+    res.redirect('/login');
+  }
+})
+
+/* POST Add a Book*/
+router.post('/addbook', db.addBook);
 
 /* ADD A USER */
 router.post('/api/adduser', db.addUser);
@@ -49,7 +56,7 @@ router.get('/register', function(req, res, next){
     res.redirect('/');
   }
   res.render('register.ejs', {title: 'Register', flashMessage: null});
-})
+});
 
 /* POST register page */
 router.post('/register', db.registerUser);

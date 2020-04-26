@@ -5,7 +5,11 @@
     
   </head>
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+    <div class="container">
+      <%- include('navbar.ejs') -%>
+      <h1><%= title %></h1>
+      <p>Welcome to <%= title %></p>
+      <%- include('jslib.ejs') -%>
+    </div>
   </body>
 </html>

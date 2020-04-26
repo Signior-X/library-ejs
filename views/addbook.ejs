@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <%- include('header.ejs') -%>
+        <link rel='stylesheet' href='/stylesheets/forms.css' />
+    </head>
+    <body style="background-color: rgba(0, 255, 234, 0.082);">
+
+        <!-- Script for Checking for if the form is correct or not -->
+        <script>
+            function formPass(){
+                var totalBooks = document.getElementById("addbook-total").value;
+                if(parseInt(totalBooks)){
+                    if(totalBooks>=0){
+                        return true;
+                    }
+                    alert("Total Books must be a natural number");
+                    return false;
+                }else{
+                    alert("Total Books must be a natural number");
+                    return false;
+                }
+            }
+        </script>
+
+        <!-- Add Book Form -->
+        <div class="container">
+            <%- include('navbar.ejs') -%>
+
+            <!-- Getting Flash Messages -->
+            <% if(flashMessage){ %>
+                <div id="flash-messages" class="container">
+                    <p> <%= flashMessage %> </p>
+                </div>
+            <% } %>
+
+            <form action="/addbook" method="post" class="addbook-form-body" onsubmit="return formPass()">
+                <!-- Heading -->
+                <div class="placeholder" id='addbook-heading'>
+                    <h1><center> Add Book Page </center></h1>
+                </div>
+                <!-- Name -->
+                <div class="form-group">
+                    <input id="addbook-name" type="text" class="form-control input-block input-contrast" placeholder="Book Name*" name="name" value="" required>
+                </div>
+
+                <!-- Author -->
+                <div class="form-group">
+                    <input id="addbook-author" type="text" class="form-control input-block input-contrast" placeholder="Author Name*" name="author" value="" required>
+                </div>
+
+                <!-- Description -->
+                <div class="form-group">
+                    <textarea id="addbook-description" type="test" class="form-control input-block input-contrast" placeholder="Add description about the book" name="description" value=""></textarea>
+                </div>
+
+                <!-- Genre -->
+                <div class="form-group">
+                    <select id="addbook-genre" aria-label="genre" class="form-control input-block input-contrast" name="genre">
+                        <!-- Genre Options -->
+                        <option value="" selected="1">Genre</option>
+                        <option value="story">story</option>
+                        <option value="detective">detective</option>
+                        <option value="biography">biography</option>
+                    </select> 
+                </div>
+
+                <!-- Total Books -->
+                <div class="form-group">
+                    <input id="addbook-total" type="text" class="form-control input-contrast input-block" placeholder="Total Books*" name="total" value="" required>
+                </div>
+                <!-- Submit Button -->
+                <div style="text-align: center; margin-top: 16px;">
+                    <input id="submit-button" type="submit" value="Add Book" style="">
+                 </div>
+                
+            </form>
+            <%- include('jslib.ejs') -%>
+    </body>
+</html>

@@ -41,8 +41,10 @@
 #register-heading{
     margin-bottom: 32px !important;
 }
-
 #login-heading {
+    margin-bottom: 32px !important;
+}
+#addbook-heading {
     margin-bottom: 32px !important;
 }
 
@@ -69,6 +71,29 @@
 }
 @media only screen and (max-width: 800px){
     .register-form-body{
+        width: 400px; /* For having better mobile view */
+    }
+}
+
+#addbook-description{
+    height: 128px;
+}
+
+.addbook-form-body{
+    border: 2px solid #dfe2e5;
+    border-radius: 0.75em;
+    width: 64%;
+    margin-top: 16px !important; 
+    box-sizing: border-box;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 32px;
+    padding-right: 32px;
+    padding-top: 16px;
+    padding-bottom: 16px;
+}
+@media only screen and (max-width: 800px){
+    .addbook-form-body{
         width: 400px; /* For having better mobile view */
     }
 }

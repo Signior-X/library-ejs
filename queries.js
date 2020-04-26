@@ -22,7 +22,15 @@ function create_insert_statement(jsondata, tablename){
         //console.log(key)
         col+=('"'+key+'",');
         //console.log(data[key])
-        val+=("'"+jsondata[key]+"',");
+        if(key === 'dateadded'){  // Addd all the colums which are of date type, as date type is like this one
+            val+=("'"+jsondata[key]+"',");
+        }
+        else if(key ==='total'){
+            val+=("NULLIF('"+jsondata[key]+"','')::integer,");  // This is for integer values (Type casting to Integer in sql)
+        }
+        else{
+            val+=("NULLIF('"+jsondata[key]+"',''),");   // This NULLIF does enter null value if the string is empty
+        }
     });
     col = (col.substring(0,col.length-1)+")");
     val = (val.substring(0,val.length-1)+")");
@@ -64,19 +72,27 @@ function getAllBooks(req, res, next){
       });
 }
 
-/* Funciton to add a book */
+/* API to add a book */
+/* Using xxx-urlencoded  DON't Forget to send correct data only*/
 function addBook(req, res, next){
-    var reqbody = req.body;
+
+    var date = new Date();
+    var year = date.getFullYear().toString();
+    var month = (date.getMonth()>9)?(date.getMonth.toString()):('0'+date.getMonth());
+    var d = (date.getDate()>9)?(date.getDate().toString()):('0'+date.getDate());
+    var today = year + '-'+month + '-' + d;
+
+    //res.json(req.body);
+    reqbody=req.body;
+    reqbody['dateadded']=today;
+    var stmt = create_insert_statement(reqbody, 'books');
+    //res.end(stmt);
+
     if('name' in reqbody){
-        stmt = create_insert_statement(reqbody, 'books');
         db.one(stmt+' returning id')
         .then(function(data){
             res.status(200)
-            .json({
-                status: 'success',
-                id: data['id'],
-                message: 'Successfully added the book'
-            });
+                .render('addbook.ejs', {title: "Add Book", flashMessage: "{ status: 'success', id: '"+data['id']+"', message: 'Successfully Added the Book - "+reqbody['name']+"' }", name: req.session.name});
         })
         .catch(err =>{
             return next(err);
