@@ -69,4 +69,13 @@ router.get('/logout', function(req, res, next){
 /* View All the Books */
 router.get('/books', db.viewBooks);
 
+/* View me - session variables */
+router.get('/me', function(req, res, next){
+  var name = req.session.name;
+  var email = req.session.email;
+  var userid = req.session.userid;
+  var isadmin = (req.session.isadmin)?"Admin":"Student";
+  res.render('me.ejs', { title: 'Me', name: name, data: {name: name, email:email, userid: userid, isadmin: isadmin} });
+});
+
 module.exports = router;

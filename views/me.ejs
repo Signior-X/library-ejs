@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <%- include('header.ejs') -%>
+    </head>
+    <body>
+        <div class="container">
+            <%- include('navbar.ejs') -%>
+            <% Object.keys(data).forEach(key => { %>
+                <h3><%= key %> : <%= data[key] %></h3>
+            <% }); %>
+        </div>
+        <%- include('jslib.ejs') -%>
+    </body>
+</html>

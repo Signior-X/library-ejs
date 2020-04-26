@@ -1,3 +1,8 @@
+/**
+ * This stores all the database queries
+ * Helps in connecting to database by viewing values in .env
+ */
+
 var dotenv =  require('dotenv');
 var pgp = require('pg-promise')(/* options */);  // From express documentation
 
