@@ -53,7 +53,7 @@ function addData(jsondata, tablename, ret){
 
 userdata1 = {
     'name':'priyam',
-    'email':'sethpriyam1@gamil.com',
+    'email':'sethpriyam1@gmail.com',
     'password':'test',
     'isadmin':true
 }
@@ -65,7 +65,16 @@ userdata2 = {
     'password':'test',
     'isadmin':false
 }
-console.log(addData(userdata2, 'users', 'userid'));
+
+userdata3 = {
+    'name':'Priyam',
+    'email':'seth',
+    'password':'test',
+    'isadmin':true
+}
+
+
+console.log(addData(userdata3, 'users', 'userid'));
 
 book1 = {
     'name':'sherlock homes',
@@ -106,3 +115,13 @@ book4 = {
 }
 console.log(addData(book4, 'books', 'id'));
 
+book5 = {
+    'name':'Whatever',
+    'author':'priyam',
+    'genre': 'biography',
+    'total':8,
+    'nissued':0,
+    'dateadded':'2020-04-26'
+}
+
+console.log(addData(book5, 'books', 'id'));
