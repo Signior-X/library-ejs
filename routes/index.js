@@ -8,7 +8,7 @@ var db = require('../queries');
 router.get('/', function (req, res, next) {
   if(req.session.userid){
     res.status(200);
-    res.render('index.ejs', {title: 'Home', name: req.session.name});
+    res.render('index.ejs', {title: 'Home', name: req.session.name, isadmin: req.session.isadmin });
   } else{
     res.redirect('/login');
   }
@@ -18,11 +18,8 @@ router.get('/', function (req, res, next) {
 /* SHOW ALL USERS */
 router.get('/api/getallusers', db.getAllUsers);
 
-/* SHOW ALL BOOKS */
-router.get('/api/getallbooks', db.getAllBooks);
-
 /* GET Add a Book page */
-router.get('/addbook', function(req, res, next){
+router.get('/books/add', function(req, res, next){
   if(req.session.userid){
     res.render('addbook.ejs', {title: 'Add Book', flashMessage: '', name: req.session.name});
   }
@@ -32,7 +29,7 @@ router.get('/addbook', function(req, res, next){
 })
 
 /* POST Add a Book*/
-router.post('/addbook', db.addBook);
+router.post('/books/add', db.addBook);
 
 /* ADD A USER */
 router.post('/api/adduser', db.addUser);
@@ -69,10 +66,7 @@ router.get('/logout', function(req, res, next){
   res.redirect('/login');
 });
 
-/* Dummy url for testing */
-router.get('/check', function(req, res, next){
-    req.session.userid="test";
-    res.end("Done");
-});
+/* View All the Books */
+router.get('/books', db.viewBooks);
 
 module.exports = router;

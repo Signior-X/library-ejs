@@ -37,7 +37,6 @@ function create_insert_statement(jsondata, tablename){
     stmt+=(col+" VALUES"+val);
     return(stmt);
 }
-
 //Add Query Functions
 
 /* Function to get details of all users */
@@ -49,22 +48,6 @@ function getAllUsers(req, res, next){
           status: 'success',
           data: data,
           message: 'Retrieved ALL Users'
-        });
-    })
-    .catch(function (err) {
-        return next(err);
-      });
-}
-
-/* Function to get all the details of all the books */
-function getAllBooks(req, res, next){
-    db.any('select * from books')
-    .then(function(data){
-        res.status(200)
-        .json({
-          status: 'success',
-          data: data,
-          message: 'Retrieved ALL Books'
         });
     })
     .catch(function (err) {
@@ -130,7 +113,7 @@ function checkLogin(req, res, next){
     var req_email = req.body.email;
     var req_password = req.body.password;
     // Executing one or None
-    db.oneOrNone ("select userid,password,name from users where email=$1", req_email)
+    db.oneOrNone ("select userid,password,name,isadmin from users where email=$1", req_email)
         .then(function(data){
             try{
                 if(data['password'] === req_password){
@@ -138,6 +121,11 @@ function checkLogin(req, res, next){
                     req.session.userid=data['userid'];
                     req.session.email=req_email;
                     req.session.name=data['name'];
+                    if(data['isadmin']){
+                        req.session.isadmin=true;
+                    }else{
+                        req.session.isadmin=false;
+                    }
 
                     // Redirecting as logged in
                     res.status(200);
@@ -186,6 +174,7 @@ function registerUser(req, res, next){
                     req.session.userid=data['userid'];
                     req.session.email=req_email;
                     req.session.name=req_name;
+                    req.session.isadmin=false;
 
                     // Redirecting as logged in
                     res.status(200);
@@ -201,12 +190,31 @@ function registerUser(req, res, next){
         });
 }
 
+/* Function to view all the books */
+function viewBooks(req, res, next){
+    if(req.session.email){
+        db.any('select * from books')
+        .then(function(data){
+            res.status(200)
+            .json({
+            status: 'success',
+            data: data,
+            message: 'Retrieved ALL Books'
+            });
+    })
+    .catch(function (err) {
+        return next(err);
+      });
+    }else{
+        res.redirect('/login');
+    }
+}
 
 module.exports = {
     getAllUsers: getAllUsers,
-    getAllBooks: getAllBooks,
     addBook: addBook,
     addUser: addUser,
     checkLogin: checkLogin,
-    registerUser: registerUser
+    registerUser: registerUser,
+    viewBooks: viewBooks
 };

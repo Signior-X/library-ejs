@@ -2,13 +2,73 @@
 <html>
   <head>
     <%- include('header.ejs') -%>
-    
+    <style>
+      .aside-heading{
+        padding-left: 16px;
+      }
+
+      #left-helper { 
+      position: relative;
+      float:left;
+      width:25%; 
+      margin-top: 16px;
+      
+    }
+    .main-content{
+      display: flex !important;
+    }
+    </style>
   </head>
   <body>
     <div class="container">
       <%- include('navbar.ejs') -%>
-      <h1><%= title %></h1>
-      <p>Welcome to <%= title %></p>
+
+      <!-- Start here -->
+      <% if(isadmin){ %>
+        <!-- Aside menu is only available for librarians -->
+        <aside id="left-helper">
+          <div id="aside-division">
+            <div class="aside-manage-books">
+              <h5 class="aside-heading">Manage Books</h5>
+              <ul class="aside-ul">
+                <li>
+                  <a href='/books/issue'>Book Issue</a>
+                </li>
+                <li>
+                  <a href='/books/return'>Book Return</a>
+                </li>
+                <li>
+                  <a href='/books/add'>Add New Book</a>
+                </li>
+                <li>
+                  <a href='/books'>Update Books</a>
+                </li>
+              </ul>
+            </div>
+            <div class="aside-manage-users">
+              <h5 class="aside-heading">Manage Users</h5>
+              <ul class="aside-ul">
+                <li>
+                  <a href='/students'>View Students</a>
+                </li>
+                <li>
+                  <a href='/admins'>View Admins</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </aside>
+      <% } %>
+      <!-- End of Admin Aside Block -->
+      <div class="main-content">
+        <div>
+          <h1><%= title %></h1>
+          <p>Welcome to <%= title %></p>
+          <% if(isadmin){ %>
+            <p>yes, an admin</p>
+          <% } %>
+        </div>
+      </div>
       <%- include('jslib.ejs') -%>
     </div>
   </body>
