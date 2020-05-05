@@ -64,30 +64,36 @@ function getAllUsers(req, res, next){
 /* Using xxx-urlencoded  DON't Forget to send correct data only*/
 function addBook(req, res, next){
 
-    var date = new Date();
-    var year = date.getFullYear().toString();
-    var month = (date.getMonth()>9)?(date.getMonth.toString()):('0'+date.getMonth());
-    var d = (date.getDate()>9)?(date.getDate().toString()):('0'+date.getDate());
-    var today = year + '-'+month + '-' + d;
+    if(req.session.isadmin){
+        var date = new Date();
+        var year = date.getFullYear().toString();
+        var month = (date.getMonth()>9)?(date.getMonth.toString()):('0'+date.getMonth());
+        var d = (date.getDate()>9)?(date.getDate().toString()):('0'+date.getDate());
+        var today = year + '-'+month + '-' + d;
 
-    //res.json(req.body);
-    reqbody=req.body;
-    reqbody['dateadded']=today;
-    var stmt = create_insert_statement(reqbody, 'books');
-    //res.end(stmt);
+        //res.json(req.body);
+        reqbody=req.body;
+        reqbody['dateadded']=today;
+        var stmt = create_insert_statement(reqbody, 'books');
+        //res.end(stmt);
 
-    if('name' in reqbody){
-        db.one(stmt+' returning id')
-        .then(function(data){
-            res.status(200)
-                .render('addbook.ejs', {title: "Add Book", flashMessage: "{ status: 'success', id: '"+data['id']+"', message: 'Successfully Added the Book - "+reqbody['name']+"' }", name: req.session.name});
-        })
-        .catch(err =>{
-            return next(err);
-        });
-    } else{  // Some constraints of the function
-        res.end('"name" not supplied in method body');
+        if('name' in reqbody){
+            db.one(stmt+' returning id')
+            .then(function(data){
+                res.status(200)
+                    .render('addbook.ejs', {title: "Add Book", flashMessage: "{ status: 'success', id: '"+data['id']+"', message: 'Successfully Added the Book - "+reqbody['name']+"' }", name: req.session.name});
+            })
+            .catch(err =>{
+                return next(err);
+            });
+        } else{  // Some constraints of the function
+            res.end('"name" not supplied in method body');
+        }
+    } else{
+        // Not an admin
+        res.redirect('/login');
     }
+    
 }
 
 /* REST API to add a user */
@@ -205,8 +211,8 @@ function viewBooks(req, res, next){
                 console.log(item);
             })
             */
-            res.status(200)
-            res.render('books.ejs', { title: 'Books', name: req.session.name, data: data})
+            res.status(200);
+            res.render('books.ejs', { title: 'Books', isadmin: req.session.isadmin, name: req.session.name, data: data});
     })
     .catch(function (err) {
         return next(err);
@@ -216,11 +222,123 @@ function viewBooks(req, res, next){
     }
 }
 
+/* Function to view all the books */
+function removeBook(req, res, next){
+    if(req.session.isadmin){
+        db.none('delete from books where id=$1', req.params.id)
+        .then(function(data){
+            /*
+            data.forEach(item =>{
+                console.log(item);
+            })
+            */
+            console.log("Successfully deleted!");
+            res.status(200);
+            res.redirect('/books');
+    })
+    .catch(function (err) {
+        return next(err);
+      });
+    }else{
+        res.redirect('/login');
+    }
+}
+
+/* Update the books */
+
+/* Function to query an update a book */
+function updateBook(req, res, next){
+    if(req.session.isadmin){
+        db.none('update books set name=$1, author=$2, description=$3, genre=$4, total=$5 where id=$6', [req.body.name, req.body.author, req.body.description, req.body.genre, req.body.total, req.params.id])
+        .then(function(data){
+            /*
+            data.forEach(item =>{
+                console.log(item);
+            })
+            */
+            //console.log("Successfully Updated!");
+            res.status(200);
+            res.end('Successfully updated');
+    })
+    .catch(function (err) {
+        return next(err);
+      });
+    }else{
+        res.redirect('/login');
+    }
+}
+
+/* Function to give update form */
+function updateBookForm(req, res, next){
+    if(req.session.isadmin){
+        db.one('select * from books where id=$1', req.params.id)
+        .then(function(data){
+            /*
+            data.forEach(item =>{
+                console.log(item);
+            })
+            */
+            //console.log("Yes this book exists")
+            res.status(200);
+            //console.log(data['description'])
+            var id = data['id'];
+            var name = data['name'];
+            var author = data['author'];
+            var des = data['description'];
+            var genre = data['genre'];
+            var total = data['total'];
+
+            res.render('updatebook.ejs', { title: 'Update Book', bookid: id, name: name, author: author, description: des, genre: genre, total: total });
+    })
+    .catch(function (err) {
+        // This is executed if nothing comes =>> The id does not exist
+        return next(err);
+      });
+    }else{
+        res.redirect('/login');
+    }
+}
+
+/* Function to View A Book Detais */
+function viewABook(req, res, next){
+    if(req.session.email){
+        db.one('select * from books where id=$1', req.params.id)
+        .then(function(data){
+            /*
+            data.forEach(item =>{
+                console.log(item);
+            })
+            */
+            res.status(200);
+            var bookid = data['id'];
+            var name = data['name'];
+            var author = data['author'];
+            var des = data['description'];
+            var genre = data['genre'];
+            var total = data['total'];
+            
+            res.json({id: bookid, name: name, author: author, description: des, genre: genre, total: total});
+
+            res.end("yes working"); // Make a page for book details
+    })
+    .catch(function (err) {
+        return next(err);
+      });
+    }else{
+        res.redirect('/login');
+    }
+}
+
+
 module.exports = {
     getAllUsers: getAllUsers,
     addBook: addBook,
     addUser: addUser,
     checkLogin: checkLogin,
     registerUser: registerUser,
-    viewBooks: viewBooks
+    viewBooks: viewBooks,
+    removeBook: removeBook,
+    updateBook: updateBook,
+    updateBookForm: updateBookForm,
+    viewABook: viewABook
 };

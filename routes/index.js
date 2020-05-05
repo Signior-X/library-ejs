@@ -69,6 +69,15 @@ router.get('/logout', function(req, res, next){
 /* View All the Books */
 router.get('/books', db.viewBooks);
 
+/* Remove */
+router.get('/books/:id/remove', db.removeBook);
+
+router.get('/books/:id/update', db.updateBookForm);
+
+router.post('/books/:id/update', db.updateBook);
+
+router.get('/books/:id/', db.viewABook)
+
 /* View me - session variables */
 router.get('/me', function(req, res, next){
   var name = req.session.name;

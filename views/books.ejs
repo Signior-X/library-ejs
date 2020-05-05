@@ -22,16 +22,37 @@
                       <th>Author</th>
                       <th>Genre</th>
                       <th>Date Added</th>
+
+                      <% if(isadmin){ %>
+                      <th>Update</th>
+                      <th>Remove</th>
+                  	  <% } %>
+
                     </tr>
                 </thead>
                 <tbody>
                     <% data.forEach(item => { %>
                         <tr>
                             <td><%= item.id %></td>
-                            <td><%= item.name %></td>
+
+                            <td>
+                                <a href="/books/<%= item.id %>/"><%= item.name %></a>
+                            </td>
+
                             <td><%= item.author %></td>
                             <td><%= item.genre %></td>
                             <td><%= item.dateadded %></td>
+
+                            <% if(isadmin){ %>
+                            <td>
+                            	<a href="/books/<%= item.id %>/update">Update</a>
+                            </td>
+
+                            <td>
+                            	<a href="/books/<%= item.id %>/remove">Remove</a>
+                            </td>
+                            <% } %>
+
                         </tr>
                     <% }); %>
                 </tbody>

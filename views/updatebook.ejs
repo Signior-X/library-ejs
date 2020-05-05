@@ -27,51 +27,62 @@
         <div class="container">
             <%- include('navbar.ejs') -%>
 
-            <!-- Getting Flash Messages -->
-            <% if(flashMessage){ %>
-                <div id="flash-messages" class="container">
-                    <p> <%= flashMessage %> </p>
-                </div>
-            <% } %>
 
-            <form action="/books/add" method="post" class="addbook-form-body" onsubmit="return formPass()">
+            <form action="/books/<%= bookid %>/update" method="post" class="addbook-form-body" onsubmit="return formPass()">
                 <!-- Heading -->
                 <div class="placeholder" id='addbook-heading'>
-                    <h1><center> Add New Book</center></h1>
+                    <h1><center> Update Book id: <%= bookid %></center></h1>
                 </div>
                 <!-- Name -->
                 <div class="form-group">
-                    <input id="addbook-name" type="text" class="form-control input-block input-contrast" placeholder="Book Name*" name="name" value="" required>
+                    <input id="addbook-name" type="text" class="form-control input-block input-contrast" placeholder="Book Name*" name="name" value="<%= name %>" required>
                 </div>
 
                 <!-- Author -->
                 <div class="form-group">
-                    <input id="addbook-author" type="text" class="form-control input-block input-contrast" placeholder="Author Name" name="author" value="">
+                    <input id="addbook-author" type="text" class="form-control input-block input-contrast" placeholder="Author Name" name="author" value="<%= author %>">
                 </div>
 
                 <!-- Description -->
                 <div class="form-group">
-                    <textarea id="addbook-description" type="test" class="form-control input-block input-contrast" placeholder="Add description about the book" name="description" value=""></textarea>
+                    <textarea id="addbook-description" type="test" class="form-control input-block input-contrast" placeholder="Add description about the book" name="description"><%= description %></textarea>
                 </div>
 
                 <!-- Genre -->
                 <div class="form-group">
                     <select id="addbook-genre" aria-label="genre" class="form-control input-block input-contrast" name="genre">
                         <!-- Genre Options -->
-                        <option value="" selected="1">Genre</option>
+                        <option value="" selected>Select Genre</option>
+
+                        <!-- Options -->
+                        <% if(genre === "story") { %>
+                        <option value="story" selected>story</option>
+                        <% } else{ %>
                         <option value="story">story</option>
+                        <% } %>
+
+                        <% if(genre === "detective") { %>
+                        <option value="detective" selected>detective</option>
+                        <% } else { %>
                         <option value="detective">detective</option>
+                        <% } %>
+
+                        <% if(genre === "biography") { %>
+                        <option value="biography" selected>biography</option>
+                        <% } else { %>
                         <option value="biography">biography</option>
+                        <% } %>
+
                     </select> 
                 </div>
 
                 <!-- Total Books -->
                 <div class="form-group">
-                    <input id="addbook-total" type="text" class="form-control input-contrast input-block" placeholder="Total Books*" name="total" value="" required>
+                    <input id="addbook-total" type="text" class="form-control input-contrast input-block" placeholder="Total Books*" name="total" value="<%= total %>" required>
                 </div>
                 <!-- Submit Button -->
                 <div style="text-align: center; margin-top: 16px;">
-                    <input id="submit-button" type="submit" value="Add Book" style="">
+                    <input id="submit-button" type="submit" value="Update Book" style="">
                  </div>
                 
             </form>
