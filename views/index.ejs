@@ -8,15 +8,36 @@
       }
 
       #left-helper { 
-      position: relative;
-      float:left;
-      width:25%; 
-      margin-top: 16px;
-      
-    }
+        position: relative;
+        float:left; 
+        margin-top: 8px;
+        border: 2px solid #dfe2e5;
+        border-radius: 0.75em;
+        width:300px;        
+        margin-right: 16px;
+        padding: 16px;
+      }
+
+      /* Making good for mobiles */
+      @media only screen and (max-width: 850px) {
+          /* For making the aside invisible */
+          #left-helper {
+            float: none;
+            width:100%;
+          }
+
+          #mobile-cut {
+            display: block !important;
+          }
+      }
+
+
     .main-content{
       display: flex !important;
+      margin-top: 8px;
+      padding-left: 8px;
     }
+
     </style>
   </head>
   <body>
@@ -46,6 +67,7 @@
                 </li>
               </ul>
             </div>
+            <hr>
             <div class="aside-manage-users">
               <h5 class="aside-heading">Manage Users</h5>
               <ul class="aside-ul">
@@ -57,10 +79,11 @@
                 </li>
               </ul>
             </div>
-          </div>
+          </div> 
         </aside>
       <% } %>
       <!-- End of Admin Aside Block -->
+      <hr id="mobile-cut" style="display: none;">
       <div class="main-content">
         <div>
           <h1><%= title %></h1>
