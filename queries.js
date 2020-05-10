@@ -204,7 +204,7 @@ function registerUser(req, res, next){
 /* Function to view all the books */
 function viewBooks(req, res, next){
     if(req.session.email){
-        db.any('select * from books')
+        db.any('select * from books order by id')
         .then(function(data){
             /*
             data.forEach(item =>{
@@ -258,7 +258,7 @@ function updateBook(req, res, next){
             */
             //console.log("Successfully Updated!");
             res.status(200);
-            res.end('Successfully updated');
+            res.redirect('/books');
     })
     .catch(function (err) {
         return next(err);

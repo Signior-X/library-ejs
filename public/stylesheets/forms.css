@@ -6,6 +6,19 @@
     margin-top: 16px;
 }
 
+/* Making good for mobiles */
+@media only screen and (max-width: 500px) {
+    /* For making the box for login */
+    .login-form-body{
+        width: 80%;
+        padding-left: 8px;
+        padding-right: 8px;
+        
+    }
+}
+
+
+
 /* For submit button */
 #submit-button { 
     background-color: #17b8b8; 
