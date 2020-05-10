@@ -3,6 +3,11 @@
     <!-- Heading -->
     <a class="navbar-brand" href="/">My Library</a>
   
+  	<!-- Toggler Button for mobile -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation" onclick="showDropDown()">
+    	<span class="navbar-toggler-icon"></span>
+  	</button>
+
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
@@ -29,5 +34,16 @@
       </ul>
     </div>
 
-    
 </nav>
+
+<script>
+	// Function to show the drop down menu or say tab naviagtions
+	function showDropDown() {
+	  var x = document.getElementById("navbarSupportedContent");
+	  if (x.style.display === "block") {
+	    x.style.display = "none";
+	  } else {
+	    x.style.display = "block";
+	  }
+	}
+</script>
