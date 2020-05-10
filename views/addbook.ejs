@@ -4,7 +4,7 @@
         <%- include('header.ejs') -%>
         <link rel='stylesheet' href='/stylesheets/forms.css' />
     </head>
-    <body style="background-color: rgba(0, 255, 234, 0.082);">
+    <body  style="background-color: rgba(0, 255, 234, 0.082);">
 
         <!-- Script for Checking for if the form is correct or not -->
         <script>
@@ -34,7 +34,7 @@
                 </div>
             <% } %>
 
-            <form action="/books/add" method="post" class="addbook-form-body" onsubmit="return formPass()">
+            <form action="/books/add" method="post" class="addbook-form-body" onsubmit="return formPass()"  style="background-color: rgba(0, 255, 234, 0.082);">
                 <!-- Heading -->
                 <div class="placeholder" id='addbook-heading'>
                     <h1><center> Add New Book</center></h1>
