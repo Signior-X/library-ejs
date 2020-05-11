@@ -44,7 +44,7 @@ function create_insert_statement(jsondata, tablename){
 }
 //Add Query Functions
 
-/* Function to get details of all users */
+/* API to get details of all users */
 function getAllUsers(req, res, next){
     db.any('select userid, name, email from users')
     .then(function(data){
@@ -329,6 +329,41 @@ function viewABook(req, res, next){
     }
 }
 
+/* Fucntion to View all students for all the students */
+function viewStudents(req, res, next){
+    if(req.session.email){
+            db.any('select userid, name, email from users where isadmin=false')
+                .then(function(data){
+                    res.status(200);
+                    //res.json({data: data});
+                    res.render('users.ejs', { title: 'Users', isadmin: false, name: req.session.name, data: data});
+                    
+                })
+                .catch(function (err) {
+                    return next(err);
+                });
+    } else{
+        res.redirect('/login');
+    }
+}
+
+/* Fucntion to view all users including admin */
+function viewUsers(req, res, next){
+    if(req.session.isadmin){
+        db.any('select * from users')
+            .then(function(data){
+                res.status(200);
+                //res.json({data: data});
+                res.render('users.ejs', { title: 'Users', isadmin: req.session.isadmin, name: req.session.name, data: data});
+                
+            })
+            .catch(function (err) {
+                return next(err);
+            });
+    } else{
+        res.redirect('/login');
+    }
+}
 
 module.exports = {
     getAllUsers: getAllUsers,
@@ -340,5 +375,7 @@ module.exports = {
     removeBook: removeBook,
     updateBook: updateBook,
     updateBookForm: updateBookForm,
-    viewABook: viewABook
+    viewABook: viewABook,
+    viewUsers: viewUsers,
+    viewStudents: viewStudents
 };

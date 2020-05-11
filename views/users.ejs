@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <%- include('header.ejs') -%>
+    </head>
+    <body>
+        <div class="container">
+            <%- include('navbar.ejs') -%>
+
+            <!-- Heading -->
+            <div class="placeholder" id='addbook-heading'>
+                <h1><center> Registered Users </center></h1>
+            </div>
+
+            <!-- Getting the users data -->
+            <table class="table" style="text-align: center;">
+                <!-- Table Headers -->
+                <thead>
+                    <th>Userid</th>
+                    <th>Email</th>
+                    <th>Name</th>
+
+                    <% if(isadmin) { %>
+                        <th>Password</th>
+                        <th>isadmin</th>
+                    <% } %>
+
+                </thead>
+                <!-- TBody -->
+                <tbody>
+                    <% data.forEach(item => { %>
+                        <tr>
+                            <!-- Columns -->
+                            <td><%= item.userid %></td>
+                            <td><%= item.email %></td>
+                            <td><%= item.name %></td>
+
+                            <% if(isadmin) { %>
+                                <td><%= item.password %></td>
+                                <td><%= item.isadmin %></td>
+                            <% } %>
+                        
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>

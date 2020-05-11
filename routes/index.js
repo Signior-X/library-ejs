@@ -78,6 +78,12 @@ router.post('/books/:id/update', db.updateBook);
 
 router.get('/books/:id/', db.viewABook)
 
+/* View users */
+router.get('/users', db.viewUsers);
+
+/* View students */
+router.get('/students', db.viewStudents);
+
 /* View me - session variables */
 router.get('/me', function(req, res, next){
   var name = req.session.name;
