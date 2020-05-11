@@ -332,7 +332,7 @@ function viewABook(req, res, next){
 /* Fucntion to View all students for all the students */
 function viewStudents(req, res, next){
     if(req.session.email){
-            db.any('select userid, name, email from users where isadmin=false')
+            db.any('select userid, name, email from users where isadmin=false order by userid desc')
                 .then(function(data){
                     res.status(200);
                     //res.json({data: data});
@@ -350,7 +350,7 @@ function viewStudents(req, res, next){
 /* Fucntion to view all users including admin */
 function viewUsers(req, res, next){
     if(req.session.isadmin){
-        db.any('select * from users')
+        db.any('select * from users order by userid')
             .then(function(data){
                 res.status(200);
                 //res.json({data: data});
