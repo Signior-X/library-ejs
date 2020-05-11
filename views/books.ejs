@@ -41,7 +41,7 @@
 
                             <td><%= item.author %></td>
                             <td><%= item.genre %></td>
-                            <td><%= item.dateadded %></td>
+                            <td><%= item.dateadded.toString().substr(0,15) %></td>
 
                             <% if(isadmin){ %>
                             <td>
