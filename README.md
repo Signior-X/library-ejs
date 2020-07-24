@@ -39,3 +39,8 @@ node demodata.js
 
 # REST APIs
 The are currently working and can take form or json data to work
+
+# Deployed
+
+This one is currently deployed on Heroku.
+Starting to work on Ubuntu for this one.
